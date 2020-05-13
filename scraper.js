@@ -17,6 +17,15 @@ async function scrapeProduct(url) {
     for (var element of elements) data.push(element.textContent);
     return data;
   });
+  if (titles.length == 0) {
+    console.log("inside");
+    titles = await page.evaluate(() => {
+      let data = [];
+      let elements = document.getElementsByClassName("A2sOrd");
+      for (var element of elements) data.push(element.textContent);
+      return data;
+    });
+  }
   let prices = await page.evaluate(() => {
     let data = [];
     let elements = document.getElementsByClassName("Nr22bf");

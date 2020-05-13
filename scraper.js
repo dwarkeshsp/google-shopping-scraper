@@ -11,12 +11,23 @@ async function scrapeProduct(url) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url);
-  let texts = await page.evaluate(() => {
+  let titles = await page.evaluate(() => {
+    let data = [];
+    let elements = document.getElementsByClassName("xsRiS");
+    for (var element of elements) data.push(element.textContent);
+    return data;
+  });
+  let prices = await page.evaluate(() => {
     let data = [];
     let elements = document.getElementsByClassName("Nr22bf");
     for (var element of elements) data.push(element.textContent);
     return data;
   });
-  console.log(texts);
+  data = titles.map((title, index) => [
+    title,
+    parseInt(prices[index].substring(1)),
+  ]);
+  console.log(data);
+
   browser.close();
 }
